@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohammdi Caterers - Digital Visiting Card</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --brand-green: #3b7f2b;
+            --brand-dark-green: #204417;
+            --brand-gold: #c5a059;
+            --brand-light-gold: #f4ece1;
+            --bg-cream: #fcfcf9;
+            --bg-desktop: #e3e3dc;
+            --text-dark: #2b332a;
+            --text-light: #555555;
+            --border-color: rgba(59, 127, 43, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-desktop);
+            font-family: 'Inter', Arial, sans-serif;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        /* CARD WRAPPER */
+        .card-container {
+            width: 100%;
+            max-width: 480px;
+            height: 92vh;
+            max-height: 840px;
+            background-color: var(--bg-cream);
+            position: relative;
+            overflow: hidden;
+            padding: 20px 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SVG Borders & Lanterns */
+        .card-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Content Sections */
+        .card-header {
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-logo {
+            width: 65%;
+            max-width: 200px;
+            height: auto;
+            transition: transform 0.5s ease;
+        }
+
+        .main-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .caterers-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--brand-green);
+            margin-top: 5px;
+        }
+
+        .caterers-title-guj {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.45rem;
+            font-weight: bold;
+            color: var(--brand-dark-green);
+            margin-top: -3px;
+        }
+
+        .divider-container {
+            width: 70px;
+            margin: 5px 0;
+        }
+
+        .divider-svg {
+            width: 100%;
+            height: auto;
+        }
+
+        .contact-info-block {
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        .contact-name {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: var(--brand-green);
+            letter-spacing: 0.5px;
+        }
+
+        .contact-number {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* Navigation Circle Buttons */
+        .menu-selection-area {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            z-index: 10;
+            margin: 15px 0;
+        }
+
+        .circle-button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .circle-button-row {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .menu-circle {
+            width: 105px;
+            height: 105px;
+            border: 2px solid var(--brand-green);
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(59, 127, 43, 0.12);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            padding: 8px;
+        }
+
+        .menu-circle::after {
+            content: "";
+            position: absolute;
+            top: 2px; left: 2px; right: 2px; bottom: 2px;
+            border: 1px dashed var(--brand-green);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .menu-circle-logo {
+            width: 40px;
+            height: auto;
+            margin-bottom: 2px;
+        }
+
+        .menu-circle-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--brand-dark-green);
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .touch-label {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--brand-green);
+            letter-spacing: 1px;
+            margin-top: 6px;
+            transition: color 0.3s ease;
+        }
+
+        .circle-button-container:hover .menu-circle {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 8px 20px rgba(59, 127, 43, 0.22);
+            border-color: var(--brand-gold);
+        }
+
+        .circle-button-container:hover .touch-label {
+            color: var(--brand-gold);
+        }
+
+        /* Large single button at bottom center */
+        .thal-menu-btn {
+            margin-top: 5px;
+        }
+
+        .thal-menu-btn .menu-circle {
+            width: 110px;
+            height: 110px;
+        }
+
+        /* Social icons navigation row */
+        .social-arch-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            margin-bottom: 10px;
+        }
+
+        .social-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 380px;
+            padding: 0 5px;
+        }
+
+        .social-btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .social-circle-outer {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid rgba(59, 127, 43, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .social-circle-outer::after {
+            content: "";
+            position: absolute;
+            top: 2px; left: 2px; right: 2px; bottom: 2px;
+            border: 0.5px dashed rgba(59, 127, 43, 0.3);
+            border-radius: 50%;
+        }
+
+        .social-icon-img {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-label {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            margin-top: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .social-btn-container:hover .social-circle-outer {
+            transform: scale(1.1) translateY(-3px);
+            border-color: var(--brand-green);
+            box-shadow: 0 4px 12px rgba(59, 127, 43, 0.15);
+        }
+
+        .social-btn-container:hover .social-label {
+            color: var(--brand-green);
+        }
+
+        /* Large touch arc bar */
+        .bottom-touch-bar {
+            width: 100%;
+            max-width: 320px;
+            height: 40px;
+            border: 1px solid var(--brand-green);
+            border-radius: 50% / 100% 100% 0 0; /* Creates an arch shape */
+            border-bottom: none;
+            background-color: rgba(59, 127, 43, 0.03);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 6px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .bottom-touch-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--brand-green);
+            text-transform: uppercase;
+        }
+
+        /* Card Footer */
+        .card-footer {
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+            margin-bottom: 12px;
+        }
+
+        .no-branch-footer {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 0.78rem;
+            font-style: italic;
+            font-weight: 700;
+            color: var(--brand-green);
+            letter-spacing: 1.5px;
+            border-top: 0.8px solid var(--border-color);
+            padding-top: 8px;
+            display: inline-block;
+            width: 80%;
+        }
+
+        /* MODAL POPUPS */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(43, 51, 42, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--bg-cream);
+            border-radius: 16px;
+            border: 2px solid var(--brand-green);
+            padding: 25px 20px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: white;
+            font-size: 1.1rem;
+            color: var(--brand-green);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .close-modal-btn:hover {
+            background: var(--brand-green);
+            color: white;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            color: var(--brand-green);
+            font-weight: 700;
+            border-bottom: 1.5px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .modal-body-text {
+            font-size: 0.92rem;
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .modal-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin: 5px 0;
+        }
+
+        /* Carousel Navigation for Gallery */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .carousel-slide {
+            display: none;
+            animation: fadeEffect 0.5s ease;
+        }
+
+        .carousel-slide.active {
+            display: block;
+        }
+
+        @keyframes fadeEffect {
+            from { opacity: 0.4; }
+            to { opacity: 1; }
+        }
+
+        .carousel-caption {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: var(--brand-dark-green);
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--border-color);
+            color: var(--brand-green);
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s ease;
+            z-index: 100;
+        }
+
+        .carousel-btn:hover {
+            background: var(--brand-green);
+            color: white;
+        }
+
+        .prev-btn { left: 8px; }
+        .next-btn { right: 8px; }
+
+        /* Video Container Placeholder */
+        .video-player-box {
+            position: relative;
+            width: 100%;
+            background: #000;
+            aspect-ratio: 16 / 9;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .play-button-overlay {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: var(--brand-green);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(59, 127, 43, 0.5);
+            transition: transform 0.2s ease;
+        }
+
+        .play-button-overlay:hover {
+            transform: scale(1.1);
+        }
+
+        /* Feedback Form Layout */
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: left;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--brand-green);
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            background: white;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--brand-green);
+            box-shadow: 0 0 0 3px rgba(59, 127, 43, 0.1);
+        }
+
+        .submit-btn {
+            background: var(--brand-green);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:hover {
+            background: var(--brand-dark-green);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Reusable SVG components for borders and corners -->
+    <div style="display: none;">
+        <svg>
+            <defs>
+                <g id="corner" fill="#3b7f2b" stroke="none">
+                    <path d="M 9.5,9.5 C 13,9.5 19,11 21,15 C 22,18 19,21 16,20 C 13,19.5 12.5,16 14.5,14.5 C 16,13 18.5,14.5 17.5,16.5 C 17,18 14.5,17.5 14.5,16" />
+                    <path d="M 9.5,9.5 C 9.5,13 11,19 15,21 C 18,22 21,19 20,16 C 19.5,13 16,12.5 14.5,14.5 C 13,16 14.5,18.5 16.5,17.5 C 18,17 17.5,14.5 16,14.5" />
+                    <path d="M 9.5,9.5 Q 26,9.5 30,11.5 Q 22,13 9.5,9.5" />
+                    <path d="M 9.5,9.5 Q 9.5,26 11.5,30 Q 13,22 9.5,9.5" />
+                    <path d="M 9.5,9.5 Q 20,20 22,22 Q 17,17 9.5,9.5" />
+                    <circle cx="32" cy="12" r="1.2" />
+                    <circle cx="12" cy="32" r="1.2" />
+                    <circle cx="23.5" cy="23.5" r="0.9" />
+                </g>
+
+                <g id="lantern-short" stroke="#3b7f2b" fill="none" stroke-width="0.35">
+                    <line x1="0" y1="9.5" x2="0" y2="21" />
+                    <path d="M -3,21 C -3,19 3,19 3,21 L 4,23 L -4,23 Z" fill="#3b7f2b" />
+                    <path d="M -4,23 L -2.5,31 L 2.5,31 L 4,23 Z" />
+                    <line x1="-1.5" y1="23" x2="-1" y2="31" />
+                    <line x1="1.5" y1="23" x2="1" y2="31" />
+                    <line x1="0" y1="23" x2="0" y2="31" />
+                    <path d="M -2.5,31 L 0,34 L 2.5,31 Z" fill="#3b7f2b" />
+                </g>
+
+                <g id="lantern-medium" stroke="#3b7f2b" fill="none" stroke-width="0.35">
+                    <line x1="0" y1="9.5" x2="0" y2="28" />
+                    <path d="M -3,28 C -3,26 3,26 3,28 L 4,30 L -4,30 Z" fill="#3b7f2b" />
+                    <path d="M -4,30 L -2.5,38 L 2.5,38 L 4,30 Z" />
+                    <line x1="-1.5" y1="30" x2="-1" y2="38" />
+                    <line x1="1.5" y1="30" x2="1" y2="38" />
+                    <line x1="0" y1="30" x2="0" y2="38" />
+                    <path d="M -2.5,38 L 0,41 L 2.5,38 Z" fill="#3b7f2b" />
+                </g>
+
+                <g id="lantern-long" stroke="#3b7f2b" fill="none" stroke-width="0.35">
+                    <line x1="0" y1="9.5" x2="0" y2="35" />
+                    <path d="M -3,35 C -3,33 3,33 3,35 L 4,37 L -4,37 Z" fill="#3b7f2b" />
+                    <path d="M -4,37 L -2.5,45 L 2.5,45 L 4,37 Z" />
+                    <line x1="-1.5" y1="37" x2="-1" y2="45" />
+                    <line x1="1.5" y1="37" x2="1" y2="45" />
+                    <line x1="0" y1="37" x2="0" y2="45" />
+                    <path d="M -2.5,45 L 0,48 L 2.5,45 Z" fill="#3b7f2b" />
+                </g>
+
+                <g id="divider-scroll" fill="#3b7f2b">
+                    <circle cx="0" cy="0" r="1.8" />
+                    <path d="M 0,0 C -4,1.5 -8,2 -12,0 C -14,-1.5 -12,-4.5 -10,-3 C -8,-1.5 -9,1 -10,1 C -12,1 -13,-1 -12,-1.5 M 0,0 C -8,-4 -20,-4 -28,-1 C -24,1.5 -12,0 0,0" />
+                    <path d="M 0,0 C 4,1.5 8,2 12,0 C 14,-1.5 12,-4.5 10,-3 C 8,-1.5 9,1 10,1 C 12,1 13,-1 12,-1.5 M 0,0 C 8,-4 20,-4 28,-1 C 24,1.5 12,0 0,0" />
+                </g>
+            </defs>
+        </svg>
+    </div>
+
+    <!-- DIGITAL VISITING CARD -->
+    <div class="card-container">
+        
+        <!-- Double Border & Lanterns SVG -->
+        <svg class="card-border" viewBox="0 0 210 297">
+            <rect x="6" y="6" width="198" height="285" fill="none" stroke="var(--brand-green)" stroke-width="0.8" />
+            <rect x="7.8" y="7.8" width="194.4" height="281.4" fill="none" stroke="var(--brand-green)" stroke-width="0.3" stroke-dasharray="1.5, 1" />
+            <rect x="9.2" y="9.2" width="191.6" height="278.6" fill="none" stroke="var(--brand-green)" stroke-width="0.3" />
+            
+            <use href="#corner" x="0" y="0" />
+            <use href="#corner" x="0" y="0" transform="translate(210, 0) scale(-1, 1)" />
+            <use href="#corner" x="0" y="0" transform="translate(0, 297) scale(1, -1)" />
+            <use href="#corner" x="0" y="0" transform="translate(210, 297) scale(-1, -1)" />
+            
+            <use href="#lantern-short" x="22" />
+            <use href="#lantern-long" x="32" />
+            <use href="#lantern-medium" x="42" />
+            
+            <use href="#lantern-medium" x="168" />
+            <use href="#lantern-long" x="178" />
+            <use href="#lantern-short" x="188" />
+        </svg>
+
+        <!-- Card Header with Brand Details -->
+        <div class="card-header">
+            <img class="main-logo" src="mohammdi_logo.png" alt="Mohammdi Caterers Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%233b7f2b\'><circle cx=\'50\' cy=\'50\' r=\'45\' fill=\'none\' stroke=\'%233b7f2b\' stroke-width=\'3\'/><text x=\'50%\' y=\'62%\' font-size=\'40\' font-family=\'serif\' text-anchor=\'middle\' font-weight=\'bold\'>M</text></svg>'">
+            <h1 class="caterers-title">MOHAMMDI CATERERS</h1>
+            <div class="caterers-title-guj">મોહમ્મદી કેટર્સ</div>
+            
+            <div class="divider-container">
+                <svg viewBox="-35 -5 70 10" class="divider-svg">
+                    <use href="#divider-scroll" x="0" y="0" />
+                </svg>
+            </div>
+
+            <div class="contact-info-block">
+                <div class="contact-name">AZHAR BHAI</div>
+                <div class="contact-number">M : 9228864724 / M : 9227404681</div>
+            </div>
+        </div>
+
+        <!-- Central Circle Buttons -->
+        <div class="menu-selection-area">
+            
+            <div class="circle-button-row">
+                <!-- Regular Menu Circle -->
+                <a href="MOHAMMDI_CATERERS_Priced_Menu.html" class="circle-button-container">
+                    <div class="menu-circle">
+                        <img class="menu-circle-logo" src="mohammdi_logo.png" alt="Logo" onerror="this.style.display='none'">
+                        <div class="menu-circle-title">Regular Menu</div>
+                    </div>
+                    <span class="touch-label">TOUCH HERE</span>
+                </a>
+
+                <!-- Wedding Menu Circle (Redesigned Packages Menu) -->
+                <a href="MOHAMMDI_CATERERS_Package_Menu.html" class="circle-button-container">
+                    <div class="menu-circle">
+                        <img class="menu-circle-logo" src="mohammdi_logo.png" alt="Logo" onerror="this.style.display='none'">
+                        <div class="menu-circle-title">Wedding Menu</div>
+                    </div>
+                    <span class="touch-label">TOUCH HERE</span>
+                </a>
+            </div>
+
+            <!-- Thal Menu Circle (Popup Modal) -->
+            <div class="circle-button-container thal-menu-btn" onclick="openModal('modal-thal')">
+                <div class="menu-circle">
+                    <img class="menu-circle-logo" src="mohammdi_logo.png" alt="Logo" onerror="this.style.display='none'">
+                    <div class="menu-circle-title">Thal Menu</div>
+                </div>
+                <span class="touch-label">TOUCH HERE</span>
+            </div>
+
+        </div>
+
+        <!-- Social Icons Navigation Arc Section -->
+        <div class="social-arch-wrapper">
+            <div class="social-row">
+                <!-- WhatsApp -->
+                <a href="https://wa.me/919228864724?text=Hi%20Azhar%20Bhai,%20I%20scanned%20your%20digital%20card%20and%20would%20like%20to%20inquire%20about%20catering%20services." target="_blank" class="social-btn-container">
+                    <div class="social-circle-outer">
+                        <svg class="social-icon-img" viewBox="0 0 24 24" fill="#25d366"><path d="M12.031 2c-5.514 0-9.989 4.478-9.989 9.99 0 2.38.835 4.562 2.227 6.275L3 22l3.874-1.233c1.517.922 3.284 1.458 5.171 1.458 5.515 0 9.99-4.478 9.99-9.99S17.546 2 12.031 2zm0 16.29c-1.89 0-3.66-.543-5.183-1.485l-.372-.23-2.316.736.75-2.26-.263-.42c1.07-1.7 1.636-3.69 1.636-5.74 0-4.846 3.942-8.79 8.788-8.79 4.845 0 8.788 3.943 8.788 8.79 0 4.845-3.943 8.79-8.788 8.79z"/></svg>
+                    </div>
+                    <span class="social-label">WhatsApp</span>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/mohammdi_caterers" target="_blank" class="social-btn-container">
+                    <div class="social-circle-outer">
+                        <svg class="social-icon-img" viewBox="0 0 24 24" fill="#e1306c"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </div>
+                    <span class="social-label">Instagram</span>
+                </a>
+
+                <!-- Gallery -->
+                <div class="social-btn-container" onclick="openModal('modal-gallery')">
+                    <div class="social-circle-outer">
+                        <svg class="social-icon-img" viewBox="0 0 24 24" fill="var(--brand-green)"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm3 7l2.5 3 3.5-4.5 4.5 6H5l4-5.5z"/></svg>
+                    </div>
+                    <span class="social-label">Gallery</span>
+                </div>
+
+                <!-- Videos -->
+                <div class="social-btn-container" onclick="openModal('modal-videos')">
+                    <div class="social-circle-outer">
+                        <svg class="social-icon-img" viewBox="0 0 24 24" fill="var(--brand-green)"><path d="M4 4h16v12H4V4zm0 14h16v2H4v-2zm6-11l5 3-5 3V7z"/></svg>
+                    </div>
+                    <span class="social-label">Videos</span>
+                </div>
+
+                <!-- Location -->
+                <a href="https://maps.google.com/?q=Mohammdi+Caterers+Begumpura+Surat" target="_blank" class="social-btn-container">
+                    <div class="social-circle-outer">
+                        <svg class="social-icon-img" viewBox="0 0 24 24" fill="#ea4335"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    </div>
+                    <span class="social-label">Location</span>
+                </a>
+
+                <!-- Feedback -->
+                <div class="social-btn-container" onclick="openModal('modal-feedback')">
+                    <div class="social-circle-outer">
+                        <svg class="social-icon-img" viewBox="0 0 24 24" fill="var(--brand-green)"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/></svg>
+                    </div>
+                    <span class="social-label">Feedback</span>
+                </div>
+            </div>
+
+            <!-- Touch Bar Arch layout -->
+            <div class="bottom-touch-bar">
+                <span class="bottom-touch-text">Touch Here</span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer">
+            <span class="no-branch-footer">WE HAVE NO OTHER BRANCH • અમારી બીજી કોઈ શાખા નથી</span>
+        </div>
+
+    </div>
+
+    <!-- MODAL - THAL MENU -->
+    <div id="modal-thal" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-thal')">
+        <div class="modal-card">
+            <button class="close-modal-btn" onclick="closeModal('modal-thal')">&times;</button>
+            <h3 class="modal-title">Traditional Thal System</h3>
+            <img class="modal-img" src="caterers_thal_system.png" alt="Thal dining setup">
+            <p class="modal-body-text">
+                We are proud specialists of the traditional Bohra-style **Thal Dining System**. Perfect for communal feasts, marriages, and events, ensuring delicious food served in elegant, large round platters.
+            </p>
+            <a href="https://wa.me/919228864724?text=Hi%20Azhar%20Bhai,%20I'm%20interested%20in%20inquiring%20about%20your%20Thal%20System%20catering%20services." 
+               target="_blank" class="submit-btn" style="text-decoration:none;">Book Thal System</a>
+        </div>
+    </div>
+
+    <!-- MODAL - GALLERY CAROUSEL -->
+    <div id="modal-gallery" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-gallery')">
+        <div class="modal-card">
+            <button class="close-modal-btn" onclick="closeModal('modal-gallery')">&times;</button>
+            <h3 class="modal-title">Food & Catering Gallery</h3>
+            
+            <div class="carousel-container">
+                <!-- Slide 1 -->
+                <div class="carousel-slide active">
+                    <img class="modal-img" src="catering_setup_wedding.png" alt="Wedding Buffet Setup">
+                    <div class="carousel-caption">Luxury Wedding Buffet</div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-slide">
+                    <img class="modal-img" src="caterers_thal_system.png" alt="Traditional Thal Plates">
+                    <div class="carousel-caption">Traditional Thal Feast</div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-slide">
+                    <img class="modal-img" src="caterers_dessert_display.png" alt="Wedding Sweet Display">
+                    <div class="carousel-caption">Exquisite Sweets Display</div>
+                </div>
+
+                <!-- Carousel Controls -->
+                <button class="carousel-btn prev-btn" onclick="shiftCarousel(-1)">&lt;</button>
+                <button class="carousel-btn next-btn" onclick="shiftCarousel(1)">&gt;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL - VIDEOS PLAYER -->
+    <div id="modal-videos" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-videos')">
+        <div class="modal-card">
+            <button class="close-modal-btn" onclick="closeModal('modal-videos')">&times;</button>
+            <h3 class="modal-title">Event Catering Presentation</h3>
+            <div class="video-player-box">
+                <!-- Simple stylized animation loader to represent dynamic video preview -->
+                <div class="play-button-overlay" onclick="alert('Playing presentation video... (This will connect to your Youtube/Vimeo catering channel)')">▶</div>
+            </div>
+            <p class="modal-body-text" style="font-size:0.8rem; color:var(--text-light); margin-top:5px;">
+                Watch our dedicated team manage gourmet serving setups and elegant table systems live at wedding events.
+            </p>
+        </div>
+    </div>
+
+    <!-- MODAL - CUSTOMER FEEDBACK -->
+    <div id="modal-feedback" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-feedback')">
+        <div class="modal-card">
+            <button class="close-modal-btn" onclick="closeModal('modal-feedback')">&times;</button>
+            <h3 class="modal-title">Catering Feedback Form</h3>
+            <form class="feedback-form" onsubmit="event.preventDefault(); alert('Thank you so much for your feedback! We will get in touch.'); closeModal('modal-feedback');">
+                <div class="form-group">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" class="form-control" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" placeholder="Enter your contact number" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Your Review</label>
+                    <textarea class="form-control" rows="3" placeholder="Tell us how you liked our catering service..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT ACTIONS -->
+    <script>
+        // Modal functions
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function closeModalOnOverlay(e, id) {
+            if (e.target.id === id) {
+                closeModal(id);
+            }
+        }
+
+        // Carousel Functions
+        let activeSlideIdx = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+
+        function shiftCarousel(offset) {
+            slides[activeSlideIdx].classList.remove('active');
+            activeSlideIdx = (activeSlideIdx + offset + slides.length) % slides.length;
+            slides[activeSlideIdx].classList.add('active');
+        }
+    </script>
+</body>
+</html>
