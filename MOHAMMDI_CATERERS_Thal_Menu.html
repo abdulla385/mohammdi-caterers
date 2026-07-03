@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohammdi Caterers - Redesigned Thal Menu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --brand-green: #3b7f2b;
+            --brand-dark-green: #204417;
+            --brand-gold: #c5a059;
+            --brand-light-gold: #f4ece1;
+            --bg-cream: #fcfcf9;
+            --bg-desktop: #e3e3dc;
+            --text-dark: #2b332a;
+            --text-light: #555555;
+            --border-color: rgba(59, 127, 43, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-desktop);
+            font-family: 'Inter', Arial, sans-serif;
+            color: var(--text-dark);
+            -webkit-print-color-adjust: exact;
+            transition: background-color 0.3s ease;
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body {
+                background-color: var(--bg-cream) !important;
+            }
+            #web-view {
+                display: none !important;
+            }
+            #print-view {
+                display: block !important;
+            }
+            .page {
+                margin: 0 !important;
+                box-shadow: none !important;
+                page-break-after: always;
+            }
+            @page {
+                size: A4;
+                margin: 0;
+            }
+        }
+
+        /* WEB VIEW / DASHBOARD LAYOUT */
+        #web-view {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Sticky Control Bar */
+        .control-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(252, 252, 249, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .control-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--brand-green);
+        }
+
+        .brand-pill img {
+            height: 35px;
+        }
+
+        .brand-pill span {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1.5px solid var(--brand-green);
+            color: var(--brand-green);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--brand-green);
+            color: white;
+        }
+
+        .search-container {
+            position: relative;
+            width: 250px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px 10px 35px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--brand-green);
+            box-shadow: 0 0 0 3px rgba(59, 127, 43, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--brand-green);
+            pointer-events: none;
+        }
+
+        .filter-group {
+            display: flex;
+            background: #ededed;
+            padding: 4px;
+            border-radius: 8px;
+            gap: 4px;
+        }
+
+        .filter-btn {
+            border: none;
+            outline: none;
+            padding: 8px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: transparent;
+            color: var(--text-light);
+        }
+
+        .filter-btn.active {
+            background: var(--bg-cream);
+            color: var(--brand-green);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .view-toggle {
+            display: flex;
+            background: #ededed;
+            padding: 4px;
+            border-radius: 8px;
+            gap: 4px;
+        }
+
+        .toggle-btn {
+            border: none;
+            outline: none;
+            padding: 8px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: transparent;
+            color: var(--text-light);
+        }
+
+        .toggle-btn.active {
+            background: var(--bg-cream);
+            color: var(--brand-green);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        /* Brand Hero / Header */
+        .hero-section {
+            background: var(--bg-cream);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 10px double var(--border-color);
+            margin: 10px;
+            pointer-events: none;
+            border-radius: 10px;
+        }
+
+        .hero-logo {
+            max-width: 250px;
+            height: auto;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2.2rem;
+            color: var(--brand-green);
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        .hero-guj {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--brand-dark-green);
+            margin-top: -5px;
+        }
+
+        .hero-badge {
+            background: var(--brand-green);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 6px 20px;
+            border-radius: 50px;
+            margin: 10px 0;
+        }
+
+        .hero-address {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .hero-contacts {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(59, 127, 43, 0.04);
+            border: 1px solid rgba(59, 127, 43, 0.1);
+            padding: 12px 25px;
+            border-radius: 10px;
+            min-width: 260px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            box-shadow: 0 4px 15px rgba(59, 127, 43, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .contact-role {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--brand-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .contact-name-tag {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--brand-dark-green);
+            margin-bottom: 8px;
+        }
+
+        .contact-actions {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .action-link {
+            flex: 1;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .action-call {
+            background: transparent;
+            border: 1px solid var(--brand-green);
+            color: var(--brand-green);
+        }
+
+        .action-call:hover {
+            background: var(--brand-green);
+            color: white;
+        }
+
+        .action-wa {
+            background: #25d366;
+            border: 1px solid #25d366;
+            color: white;
+        }
+
+        .action-wa:hover {
+            background: #1ebd58;
+        }
+
+        /* Interactive Tabs and Content */
+        .menu-dashboard-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 900px) {
+            .menu-dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sidebar-nav {
+            background: var(--bg-cream);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 700px;
+            overflow-y: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.1rem;
+            color: var(--brand-dark-green);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .nav-tab-btn {
+            text-align: left;
+            padding: 12px 15px;
+            border: 1px solid transparent;
+            background: transparent;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-tab-btn:hover {
+            background: rgba(59, 127, 43, 0.05);
+            color: var(--brand-green);
+        }
+
+        .nav-tab-btn.active {
+            background: var(--brand-light-gold);
+            color: var(--brand-dark-green);
+            border-color: var(--brand-gold);
+        }
+
+        .package-price-badge {
+            font-size: 0.8rem;
+            background: var(--brand-green);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        .package-type-badge {
+            font-size: 0.7rem;
+            background: transparent;
+            border: 1px solid var(--brand-gold);
+            color: var(--brand-gold);
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .package-type-badge.chicken {
+            border-color: var(--brand-green);
+            color: var(--brand-green);
+        }
+
+        /* Detail Card */
+        .details-panel {
+            background: var(--bg-cream);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            position: relative;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 600px) {
+            .details-panel {
+                padding: 15px;
+            }
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .panel-title-group h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.8rem;
+            color: var(--brand-green);
+            font-weight: 700;
+        }
+
+        .panel-title-group p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 3px;
+        }
+
+        /* Thal Details Section Layout */
+        .thal-content-body {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .thal-content-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .thal-image-wrapper {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            text-align: center;
+        }
+
+        .thal-image-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .thal-image-wrapper img:hover {
+            transform: scale(1.02);
+        }
+
+        .thal-image-caption {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--brand-dark-green);
+            margin-top: 8px;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .category-box-card {
+            background: rgba(244, 236, 225, 0.2);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .category-box-card:hover {
+            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .category-box-card h4 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--brand-dark-green);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .category-box-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .category-box-card li {
+            font-size: 0.88rem;
+            color: var(--text-dark);
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .category-box-card li::before {
+            content: "•";
+            color: var(--brand-gold);
+            font-size: 1.1rem;
+            line-height: 0.8;
+        }
+
+        .empty-category-text {
+            font-size: 0.8rem;
+            font-style: italic;
+            color: var(--text-light);
+        }
+
+        .footer-note-card {
+            background: rgba(59, 127, 43, 0.04);
+            border: 1px dashed var(--brand-green);
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            font-size: 1rem;
+            text-align: center;
+            color: var(--brand-dark-green);
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .pricing-section-card {
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .pricing-info-block {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .price-main-tag {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--brand-green);
+        }
+
+        .price-sub-tag {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Search Results Overlay */
+        .search-results-alert {
+            background: var(--brand-light-gold);
+            border: 1px solid var(--brand-gold);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .clear-search-btn {
+            background: transparent;
+            border: none;
+            color: var(--brand-green);
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* PRINT PREVIEW BOUNDARY CONTROLS */
+        #print-view {
+            display: none;
+        }
+
+        #print-view.preview-mode {
+            display: block;
+        }
+
+        /* PRINT BROCHURE CONTAINER styling for screen preview */
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background-color: var(--bg-cream);
+            position: relative;
+            overflow: hidden;
+            padding: 18mm 16mm 18mm 16mm;
+            margin: 25px auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0,0,0,0.08);
+            page-break-after: always;
+        }
+
+        /* Page Border SVGs */
+        .page-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Cover Page Print Styling */
+        .cover-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cover-content {
+            width: 100%;
+            text-align: center;
+            padding: 5mm;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            z-index: 5;
+        }
+
+        .cover-logo-img {
+            width: 70%;
+            max-width: 320px;
+            margin-top: 15mm;
+        }
+
+        .cover-menu-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 32pt;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: var(--brand-green);
+            margin-top: 5mm;
+            text-transform: uppercase;
+        }
+
+        .cover-menu-title-guj {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 26pt;
+            font-weight: 700;
+            color: var(--brand-dark-green);
+            margin-top: 2mm;
+        }
+
+        .divider-container {
+            width: 100px;
+            margin: 4mm 0;
+        }
+
+        .divider-svg {
+            width: 100%;
+            height: auto;
+        }
+
+        .cover-banner-guj {
+            width: 90%;
+            border: 1px solid var(--brand-green);
+            padding: 2px;
+            border-radius: 4px;
+            margin-bottom: 5mm;
+        }
+
+        .cover-banner-guj-inner {
+            border: 1px solid var(--brand-green);
+            padding: 10px 15px;
+            border-radius: 2px;
+            background-color: rgba(59, 127, 43, 0.02);
+        }
+
+        .cover-banner-text {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 12.5pt;
+            font-weight: 700;
+            color: var(--brand-green);
+            letter-spacing: 0.5px;
+        }
+
+        .cover-footer {
+            width: 90%;
+            margin-bottom: 5mm;
+        }
+
+        .cover-address-text {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 9.5pt;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 5mm;
+        }
+
+        .cover-contacts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 6mm;
+            border-top: 1px solid rgba(59, 127, 43, 0.2);
+            padding-top: 4mm;
+        }
+
+        .cover-contact-cell {
+            text-align: center;
+        }
+
+        .cover-contact-label {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: 11.5pt;
+            color: var(--brand-green);
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .cover-contact-val {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 9.5pt;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .cover-no-branch {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 9.5pt;
+            font-style: italic;
+            font-weight: 700;
+            color: var(--brand-green);
+            letter-spacing: 2px;
+            border-top: 1px solid rgba(59, 127, 43, 0.2);
+            padding-top: 3mm;
+            display: inline-block;
+            width: 80%;
+        }
+
+        /* Print Menu Pages styling */
+        .print-page-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 16mm;
+            margin-bottom: 5mm;
+        }
+
+        .print-header-line {
+            flex: 1;
+            height: 0.8px;
+            background: linear-gradient(to right, rgba(59,127,43,0), rgba(59,127,43,0.4) 30%, rgba(59,127,43,0.4) 70%, rgba(59,127,43,0));
+        }
+
+        .print-header-logo-img {
+            height: 28px;
+            margin: 0 10px;
+        }
+
+        .print-header-brand-text {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 10pt;
+            font-weight: 700;
+            color: var(--brand-green);
+            letter-spacing: 1.5px;
+            margin-right: 10px;
+        }
+
+        .print-page-content {
+            height: calc(100% - 28mm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .print-menu-title-block {
+            text-align: center;
+            margin-bottom: 4mm;
+        }
+
+        .print-menu-title-text {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 20pt;
+            font-weight: 700;
+            color: var(--brand-green);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .print-menu-subtitle-text {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 11pt;
+            font-style: italic;
+            color: var(--brand-gold);
+            margin-top: 3px;
+        }
+
+        .print-main-body {
+            display: flex;
+            flex-direction: column;
+            gap: 5mm;
+            flex-grow: 1;
+            margin-top: 2mm;
+        }
+
+        .print-image-container {
+            width: 100%;
+            text-align: center;
+        }
+
+        .print-thal-photo {
+            max-width: 75%;
+            max-height: 85mm;
+            border-radius: 8px;
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .print-items-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 8mm;
+            row-gap: 4mm;
+        }
+
+        .print-category-block {
+            break-inside: avoid;
+            margin-bottom: 2mm;
+        }
+
+        .print-category-header {
+            text-align: left;
+            margin-bottom: 2mm;
+            position: relative;
+        }
+
+        .print-category-title-text {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 11pt;
+            font-weight: 700;
+            color: var(--brand-green);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-block;
+            padding-right: 8px;
+            background-color: var(--bg-cream);
+            z-index: 5;
+            position: relative;
+        }
+
+        .print-category-underline {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 0.5px;
+            border-bottom: 1px double rgba(197, 160, 89, 0.4);
+            z-index: 1;
+        }
+
+        .print-category-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .print-menu-item-row {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 9.5pt;
+            line-height: 1.4;
+            color: var(--text-dark);
+            padding: 1px 0;
+            border-bottom: 0.5px dotted rgba(59, 127, 43, 0.15);
+            display: flex;
+            align-items: flex-start;
+            gap: 4px;
+        }
+
+        .print-menu-item-row::before {
+            content: "•";
+            color: var(--brand-gold);
+            font-weight: bold;
+            margin-right: 4px;
+        }
+
+        .print-footer-note {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 11pt;
+            font-weight: bold;
+            color: var(--brand-dark-green);
+            text-align: center;
+            margin-top: 4mm;
+            border-top: 1px dashed var(--border-color);
+            border-bottom: 1px dashed var(--border-color);
+            padding: 3mm 0;
+            background-color: rgba(59, 127, 43, 0.02);
+        }
+
+        .print-page-footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .print-page-number-circle {
+            width: 25px;
+            height: 25px;
+            border: 1px solid var(--brand-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 9pt;
+            color: var(--brand-green);
+            background-color: var(--bg-cream);
+            z-index: 105;
+        }
+
+        .no-other-branch-footer {
+            text-align: center;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 9.5pt;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            color: var(--brand-green);
+            margin-top: 4mm;
+            border-top: 0.8px solid rgba(59,127,43,0.15);
+            padding-top: 2mm;
+        }
+        
+        /* Highlight match style */
+        .highlight {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Reusable SVG components for borders and corners -->
+    <div style="display: none;">
+        <svg>
+            <defs>
+                <!-- Leafy corner design matching digital visiting card layout -->
+                <g id="corner" fill="#3b7f2b" stroke="none">
+                    <path d="M 9.5,9.5 C 13,9.5 19,11 21,15 C 22,18 19,21 16,20 C 13,19.5 12.5,16 14.5,14.5 C 16,13 18.5,14.5 17.5,16.5 C 17,18 14.5,17.5 14.5,16" />
+                    <path d="M 9.5,9.5 C 9.5,13 11,19 15,21 C 18,22 21,19 20,16 C 19.5,13 16,12.5 14.5,14.5 C 13,16 14.5,18.5 16.5,17.5 C 18,17 17.5,14.5 16,14.5" />
+                    <path d="M 9.5,9.5 Q 26,9.5 30,11.5 Q 22,13 9.5,9.5" />
+                    <path d="M 9.5,9.5 Q 9.5,26 11.5,30 Q 13,22 9.5,9.5" />
+                    <path d="M 9.5,9.5 Q 20,20 22,22 Q 17,17 9.5,9.5" />
+                    <circle cx="32" cy="12" r="1.2" />
+                    <circle cx="12" cy="32" r="1.2" />
+                    <circle cx="23.5" cy="23.5" r="0.9" />
+                </g>
+
+                <!-- Symmetric hanging lanterns matching visiting card -->
+                <g id="lantern-short" stroke="#3b7f2b" fill="none" stroke-width="0.35">
+                    <line x1="0" y1="9.5" x2="0" y2="21" />
+                    <path d="M -3,21 C -3,19 3,19 3,21 L 4,23 L -4,23 Z" fill="#3b7f2b" />
+                    <path d="M -4,23 L -2.5,31 L 2.5,31 L 4,23 Z" />
+                    <line x1="-1.5" y1="23" x2="-1" y2="31" />
+                    <line x1="1.5" y1="23" x2="1" y2="31" />
+                    <line x1="0" y1="23" x2="0" y2="31" />
+                    <path d="M -2.5,31 L 0,34 L 2.5,31 Z" fill="#3b7f2b" />
+                </g>
+
+                <g id="lantern-medium" stroke="#3b7f2b" fill="none" stroke-width="0.35">
+                    <line x1="0" y1="9.5" x2="0" y2="28" />
+                    <path d="M -3,28 C -3,26 3,26 3,28 L 4,30 L -4,30 Z" fill="#3b7f2b" />
+                    <path d="M -4,30 L -2.5,38 L 2.5,38 L 4,30 Z" />
+                    <line x1="-1.5" y1="30" x2="-1" y2="38" />
+                    <line x1="1.5" y1="30" x2="1" y2="38" />
+                    <line x1="0" y1="30" x2="0" y2="38" />
+                    <path d="M -2.5,38 L 0,41 L 2.5,38 Z" fill="#3b7f2b" />
+                </g>
+
+                <g id="lantern-long" stroke="#3b7f2b" fill="none" stroke-width="0.35">
+                    <line x1="0" y1="9.5" x2="0" y2="35" />
+                    <path d="M -3,35 C -3,33 3,33 3,35 L 4,37 L -4,37 Z" fill="#3b7f2b" />
+                    <path d="M -4,37 L -2.5,45 L 2.5,45 L 4,37 Z" />
+                    <line x1="-1.5" y1="37" x2="-1" y2="45" />
+                    <line x1="1.5" y1="37" x2="1" y2="45" />
+                    <line x1="0" y1="37" x2="0" y2="45" />
+                    <path d="M -2.5,45 L 0,48 L 2.5,45 Z" fill="#3b7f2b" />
+                </g>
+
+                <!-- Elegant divider scroll between categories -->
+                <g id="divider-scroll" fill="#3b7f2b">
+                    <circle cx="0" cy="0" r="1.8" />
+                    <path d="M 0,0 C -4,1.5 -8,2 -12,0 C -14,-1.5 -12,-4.5 -10,-3 C -8,-1.5 -9,1 -10,1 C -12,1 -13,-1 -12,-1.5 M 0,0 C -8,-4 -20,-4 -28,-1 C -24,1.5 -12,0 0,0" />
+                    <path d="M 0,0 C 4,1.5 8,2 12,0 C 14,-1.5 12,-4.5 10,-3 C 8,-1.5 9,1 10,1 C 12,1 13,-1 12,-1.5 M 0,0 C 8,-4 20,-4 28,-1 C 24,1.5 12,0 0,0" />
+                </g>
+            </defs>
+        </svg>
+    </div>
+
+    <!-- INTERACTIVE WEB VIEW -->
+    <div id="web-view">
+        
+        <!-- Sticky Control bar -->
+        <div class="control-bar">
+            <div class="control-left">
+                <a href="index.html" class="back-btn">← Back to Card</a>
+                <a href="#" class="brand-pill">
+                    <img src="mohammdi_logo.png" alt="M" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%233b7f2b\'><circle cx=\'50\' cy=\'50\' r=\'45\' fill=\'none\' stroke=\'%233b7f2b\' stroke-width=\'3\'/><text x=\'50%\' y=\'62%\' font-size=\'40\' font-family=\'serif\' text-anchor=\'middle\' font-weight=\'bold\'>M</text></svg>'">
+                    <span>MOHAMMDI CATERERS</span>
+                </a>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="search-bar" class="search-input" placeholder="Search dish/ingredient...">
+            </div>
+
+            <div class="filter-group">
+                <button id="filter-all" class="filter-btn active" onclick="setFilter('all')">All</button>
+                <button id="filter-chicken" class="filter-btn" onclick="setFilter('chicken')">Chicken</button>
+                <button id="filter-mutton" class="filter-btn" onclick="setFilter('mutton')">Mutton</button>
+            </div>
+            
+            <div class="view-toggle">
+                <button id="btn-web-view" class="toggle-btn active" onclick="switchView('web')">Digital Dashboard</button>
+                <button id="btn-print-view" class="toggle-btn" onclick="switchView('print')">Print Preview (A4)</button>
+            </div>
+        </div>
+
+        <!-- Brand Hero Header -->
+        <div class="hero-section">
+            <img class="hero-logo" src="mohammdi_logo.png" alt="Mohammdi Caterers Logo" onerror="this.style.display='none'">
+            <div class="hero-title">MOHAMMDI CATERERS</div>
+            <div class="hero-guj">મોહમ્મદી કેટર્સ</div>
+            
+            <div class="hero-badge">Thal System Specialist (થાલ સીસ્ટમના સ્પેશ્યાલીસ્ટ)</div>
+            
+            <div class="hero-address">
+                <strong>Address:</strong> Begumpura, H.K. Street, Super Yarn Market, Kadri Hall Lane, Nr. Suraj Steel, Surat.<br>
+                (બેગમ પુરા, H.K. સ્ટ્રીટ, સુપર યાર્ન માર્કેટ, કાદરી હોલની ગલી, સુરજ સ્ટીલ ની લાઈનમાં, સુરત)
+            </div>
+
+            <div class="hero-contacts">
+                <div class="contact-item">
+                    <span class="contact-role">Contact Partner</span>
+                    <span class="contact-name-tag">AZHAR BHAI</span>
+                    <div class="contact-actions">
+                        <a href="tel:9727404681" class="action-link action-call">📞 Call Now</a>
+                        <a href="https://wa.me/919727404681?text=Hi%20Azhar%20Bhai,%20I%20am%20viewing%20your%20thal%20menu%20and%20want%20to%20inquire%20about%20catering%20services." target="_blank" class="action-link action-wa">💬 WhatsApp</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-role">Contact Partner</span>
+                    <span class="contact-name-tag">ABUTALIB BHAI</span>
+                    <div class="contact-actions">
+                        <a href="tel:9228864724" class="action-link action-call">📞 Call Now</a>
+                        <a href="https://wa.me/919228864724?text=Hi%20Abutalib%20Bhai,%20I%20am%20viewing%20your%20thal%20menu%20and%20want%20to%20inquire%20about%20catering%20services." target="_blank" class="action-link action-wa">💬 WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Layout Grid -->
+        <div class="menu-dashboard-grid">
+            <!-- Sidebar Navigation -->
+            <div class="sidebar-nav" id="sidebar-nav">
+                <div class="sidebar-title">Select Thal Package</div>
+                <!-- Dynamic Sidebar Buttons go here -->
+            </div>
+
+            <!-- Details Display Panel -->
+            <div class="details-panel-container">
+                <!-- Search Alerts -->
+                <div class="search-results-alert" id="search-alert">
+                    <span id="search-alert-text">Showing search results for...</span>
+                    <button class="clear-search-btn" onclick="clearSearch()">Clear Search</button>
+                </div>
+                
+                <div class="details-panel" id="details-panel">
+                    <!-- Dynamic details go here -->
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- PRINT VIEW / BROCHURE (Hidden in Web View, shown in Print View) -->
+    <div id="print-view">
+        <!-- Dynamic printable pages go here -->
+    </div>
+
+    <script>
+        // Complete menu packages data transcribed exactly from old menu
+        const thalMenus = [
+            {
+                id: 1,
+                page: 2,
+                price: 1275,
+                type: "Chicken",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_2.jpg",
+                items: {
+                    "Starter": ["Chicken Kheema Paratha", "Peri Peri Tikka", "Chaat"],
+                    "Sweet": ["Fresh Fruit Halwa"],
+                    "Main Course": ["Chicken Biryani", "Chass", "Salad", "Green Chuttney"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 2,
+                page: 3,
+                price: 1325,
+                type: "Chicken",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_3.jpg",
+                items: {
+                    "Starter": ["Malai Tikka"],
+                    "Sweet": ["Kaju Pista Halwa"],
+                    "Gravy": ["Chicken Angara", "Tandori Roti"],
+                    "Main Course": ["Chicken Biryani", "Raita", "Salad"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 3,
+                page: 4,
+                price: 1350,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_4.jpg",
+                items: {
+                    "Starter": ["Tandori Leg Piece (2 Pcs)"],
+                    "Sweet": ["Kaju Gulkand Halwa"],
+                    "Fruit": ["Grapes", "Papaya", "WaterMelon"],
+                    "Main Course": ["Mutton Lucknavi", "Tandori Roti", "Kashmiri Rice"],
+                    "Extras": ["Water Bottle", "Cold Drink", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 4,
+                page: 5,
+                price: 1350,
+                type: "Chicken",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_5.jpg",
+                items: {
+                    "Starter": ["Cheez Palak Kebab", "Green Tandoori Tikka", "Basket Chaat"],
+                    "Sweet": ["Akhroat Angeer Halwa"],
+                    "Desert": ["Rajbhog Icecream"],
+                    "Main Course": ["Chicken Biryani", "Chaas", "Salad", "Green Chuttney"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 5,
+                page: 6,
+                price: 1430,
+                type: "Chicken",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_6.jpg",
+                items: {
+                    "Starter": ["Pathani Roll", "French Fries Chicken"],
+                    "Sweet": ["Kaju Anjeer Halwa"],
+                    "Desert": ["Mango Souffle"],
+                    "Main Course": ["Chicken Leminate Biryani", "Chaas", "Salad", "Green Chuttney"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 6,
+                page: 7,
+                price: 1475,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_7.jpg",
+                items: {
+                    "Starter": ["Fish Kebab", "Haryali Tikka", "Chaat"],
+                    "Sweet": ["Akroat Angeer Halwa"],
+                    "Main Course": ["Mutton Lucknavi", "Mande", "Kashmiri Rice", "Salad", "Mayonnise Chuttney"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 7,
+                page: 8,
+                price: 1490,
+                type: "Chicken",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_8.jpg",
+                items: {
+                    "Starter": ["Fish", "Pathani Roll", "Basket Tikka"],
+                    "Sweet": ["Mutanzan"],
+                    "Desert": ["American Dry Fruit Icecream"],
+                    "Main Course": ["Chicken Biryani", "Chass", "Salad", "Green Chuttney"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 8,
+                page: 9,
+                price: 1500,
+                type: "Chicken",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_9.jpg",
+                items: {
+                    "Starter": ["Fish", "Malai Tikka", "Zayka Petties"],
+                    "Sweet": ["Akroat Anjir Halwa"],
+                    "Main Course": ["Chicken Korma", "Tandori Roti", "Jeera Rice"],
+                    "Extras": ["Water Bottle", "Cold Drink", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 9,
+                page: 10,
+                price: 1500,
+                type: "Chicken",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_10.jpg",
+                items: {
+                    "Starter": ["Cheez Roll", "Malai Tikka", "Fish Crispy"],
+                    "Sweet": ["Dry Fruit Halwa"],
+                    "Desert": ["Raj Bhog Icecream"],
+                    "Main Course": ["Chicken Korma", "Tandori Roti", "Kashmiri Rice", "Salad", "Green Chuttney", "Mayonnise Chuttney"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 10,
+                page: 11,
+                price: 1500,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_11.jpg",
+                items: {
+                    "Starter": ["Irani Tangdi", "Fish Kebab", "Basket Chaat"],
+                    "Sweet": ["Angeer Kaju Halwa"],
+                    "Main Course": ["Mutton Biryani", "Chaas", "Salad", "Green Chuttney"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 11,
+                page: 12,
+                price: 1550,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_12.jpg",
+                items: {
+                    "Starter": ["Winter Leg (2 Pcs)", "Sehzwan Tikka"],
+                    "Sweet": ["Akroat Anjir Halwa"],
+                    "Desert": ["Sitafal Suoffle"],
+                    "Main Course": ["Mutton Korma", "Pizza Nann", "Rajwadi Rice", "Salad"],
+                    "Extras": ["Water Bottle", "Cold Drink", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 12,
+                page: 13,
+                price: 1600,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_13.jpg",
+                items: {
+                    "Starter": ["Green Tandori Tikka", "Fish Kebab", "Chaat"],
+                    "Sweet": ["kaju Gulkand Halwa"],
+                    "Desert": ["Afghan Fry Fruit Icecream"],
+                    "Main Course": ["Mutton Nihari", "Tandoori Roti", "Jeera Rice", "Green Chuttney", "Mayonnise Chuttney"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 13,
+                page: 14,
+                price: 1650,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_14.jpg",
+                items: {
+                    "Starter": ["Fish", "Irani Tangdi", "Peri Peri Tikka"],
+                    "Sweet": ["Akroat Anjir Halwa"],
+                    "Main Course": ["Mutton Korma", "Tandori Roti", "Kashmiri Rice"],
+                    "Extras": ["Water Bottle", "Cold Drink", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 14,
+                page: 15,
+                price: 1700,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_15.jpg",
+                items: {
+                    "Starter": ["Peri Peri Tangdi", "Zayka Petties", "Malai Tikka"],
+                    "Sweet": ["Dry Fruit Halwa"],
+                    "Gravy": ["Mutton Nihari"],
+                    "Roti": ["Tandori Roti"],
+                    "Main Course": ["Zum Zum Biryani", "Raita", "Salad"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 15,
+                page: 16,
+                price: 1750,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_16.jpg",
+                items: {
+                    "Starter": ["Seekh Kebab", "Fish Peri Peri Kebab", "Haryali Tikka"],
+                    "Sweet": ["Akroat Angeer Halwa"],
+                    "Desert": ["Icecream"],
+                    "Main Course": ["Mutton Nihari", "Tandoori Roti", "Jeera Rice", "Green Chuttney", "Mayonnise Chuttney"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 16,
+                page: 17,
+                price: 1775,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_17.jpg",
+                items: {
+                    "Soup": ["Chicken Soup"],
+                    "Starter": ["Karela Chicken", "Fish Crispy", "Chaat"],
+                    "Sweet": ["Dry Fruit Halwa"],
+                    "Main Course": ["Mutton Kaliya", "Tandori Roti", "Kashmiri Rice", "Salad"],
+                    "Extras": ["Water Bottle", "Cold Drink", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 17,
+                page: 18,
+                price: 1800,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_18.jpg",
+                items: {
+                    "Starter": ["Karela Chicken", "Fish"],
+                    "Sweet": ["Mix Fruit Suoffle"],
+                    "Gravy": ["Mutton Nihari", "Tava Kulcha"],
+                    "Main Course": ["Mutton Biryani", "Raita", "Salad"],
+                    "Extras": ["Water Bottle", "Cold Drink", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 18,
+                page: 19,
+                price: 1850,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_19.jpg",
+                items: {
+                    "Starter": ["Peri Peri Tikka", "Zayka Petties", "Fish Tikka"],
+                    "Sweet": ["Akroat Anjir Halwa"],
+                    "Gravy": ["Jaipuri Mutton Korma", "Rumali Roti"],
+                    "Main Course": ["Mutton Biryani", "Raita", "Salad"],
+                    "Extras": ["Water Bottle", "Cold Drink", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 19,
+                page: 20,
+                price: 1875,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_20.jpg",
+                items: {
+                    "Starter": ["Peri peri Tikka", "Irani Tangdi (4pcs)", "Malai Tikka"],
+                    "Sweet": ["Mix Fruit Suffle"],
+                    "Gravy": ["Mutton Kashmiri"],
+                    "Roti": ["Tava Kulcha"],
+                    "Main Course": ["Mutton Biryani", "Raita", "Salad"],
+                    "Extras": ["Water Bottle", "Cold Drink", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 20,
+                page: 21,
+                price: 1950,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_21.jpg",
+                items: {
+                    "Soup": ["Green Soup"],
+                    "Starter": ["Karela Chicken", "Zayka Petties"],
+                    "Sweet": ["Akroat Anjir Halwa"],
+                    "Desert": ["Jarda Aloo Suoffle"],
+                    "Gravy": ["Mutton Kaliya", "Pizza Nann", "Rumali Roti"],
+                    "Main Course": ["Mutton Biryani", "Raita", "Salad"],
+                    "Extras": ["Water Bottle", "Cold Drink", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 21,
+                page: 22,
+                price: 2100,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_22.jpg",
+                items: {
+                    "Starter": ["Mutton Cutlets (4 pcs)", "Dabba Chicken Boneless", "Tandori Tangdi (4 pcs)"],
+                    "Sweet": ["Muzaffar Sola"],
+                    "Desert": ["Mix Fruit Souffle"],
+                    "Main Course": ["Mutton Kashmiri", "Tandoori Roti", "Kashmiri Rice", "Salad", "Green Chuttney"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 22,
+                page: 23,
+                price: 2500,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_23.jpg",
+                items: {
+                    "Starter": ["Fish Fry", "Mutton Cutlet", "Mutton Kit Handi", "Chaat", "Fish Sehzwan Tikka"],
+                    "Sweet": ["Gajar Halwa with Rabdi"],
+                    "Desert": ["Suoffle"],
+                    "Main Course": ["Mutton Biryani", "Chass", "Salad", "Green Chuttney", "Mayonnise Chuttney"],
+                    "Extras": ["Water Bottle", "Thal + Crockery"]
+                }
+            },
+            {
+                id: 23,
+                page: 24,
+                price: 2500,
+                type: "Mutton",
+                minQty: "Minimum 25 Thal (4 member)",
+                image: "images/thals/thal_page_24.jpg",
+                items: {
+                    "Soup": ["Paya Soup"],
+                    "Starter": ["Mutton Rann", "Chatpata Tikka"],
+                    "Sweet": ["Strawberry Suoffle"],
+                    "Gravy": ["Mutton Angara", "Pizza Nann"],
+                    "Main Course": ["Mutton Biryani", "Raita", "Salad"],
+                    "Extras": ["Water Bottle", "Cold Drink", "Thal + Crockery"]
+                }
+            }
+        ];
+
+        let activeThalId = 1;
+        let searchQuery = "";
+        let activeFilter = "all"; // all, chicken, mutton
+
+        function getPageBorderSVG() {
+            return `
+            <svg class="page-border" viewBox="0 0 210 297">
+                <!-- Double border lines -->
+                <rect x="6" y="6" width="198" height="285" fill="none" stroke="var(--brand-green)" stroke-width="0.8" />
+                <rect x="7.8" y="7.8" width="194.4" height="281.4" fill="none" stroke="var(--brand-green)" stroke-width="0.3" stroke-dasharray="1.5, 1" />
+                <rect x="9.2" y="9.2" width="191.6" height="278.6" fill="none" stroke="var(--brand-green)" stroke-width="0.3" />
+                
+                <!-- Corner flourishes -->
+                <use href="#corner" x="0" y="0" />
+                <use href="#corner" x="0" y="0" transform="translate(210, 0) scale(-1, 1)" />
+                <use href="#corner" x="0" y="0" transform="translate(0, 297) scale(1, -1)" />
+                <use href="#corner" x="0" y="0" transform="translate(210, 297) scale(-1, -1)" />
+                
+                <!-- Symmetrical lanterns in header corners -->
+                <use href="#lantern-short" x="22" />
+                <use href="#lantern-long" x="32" />
+                <use href="#lantern-medium" x="42" />
+                
+                <use href="#lantern-medium" x="168" />
+                <use href="#lantern-long" x="178" />
+                <use href="#lantern-short" x="188" />
+            </svg>
+            `;
+        }
+
+        // Initialize lists and layout elements
+        function initApp() {
+            renderSidebar();
+            renderActiveThalDetails();
+            renderPrintView();
+            setupSearch();
+        }
+
+        // Render dashboard sidebar tabs
+        function renderSidebar() {
+            const sidebar = document.getElementById('sidebar-nav');
+            const title = sidebar.querySelector('.sidebar-title');
+            sidebar.innerHTML = '';
+            sidebar.appendChild(title);
+
+            // Filter thals
+            const filteredThals = thalMenus.filter(thal => {
+                // Type Filter
+                if (activeFilter === "chicken" && thal.type !== "Chicken") return false;
+                if (activeFilter === "mutton" && thal.type !== "Mutton") return false;
+                
+                // Search Query
+                if (searchQuery && !thalContainsKeyword(thal, searchQuery)) return false;
+                
+                return true;
+            });
+
+            if (filteredThals.length === 0) {
+                const emptyMsg = document.createElement('div');
+                emptyMsg.className = 'empty-category-text';
+                emptyMsg.style.padding = '15px';
+                emptyMsg.style.textAlign = 'center';
+                emptyMsg.innerText = 'No matching thals.';
+                sidebar.appendChild(emptyMsg);
+                return;
+            }
+
+            filteredThals.forEach(thal => {
+                const btn = document.createElement('button');
+                btn.className = `nav-tab-btn ${thal.id === activeThalId ? 'active' : ''}`;
+                btn.onclick = () => selectThal(thal.id);
+
+                const typeClass = thal.type.toLowerCase();
+                btn.innerHTML = `
+                    <span>Thal ${thal.id} <span class="package-type-badge ${typeClass}">${thal.type}</span></span>
+                    <span class="package-price-badge">₹${thal.price}</span>
+                `;
+                sidebar.appendChild(btn);
+            });
+            
+            // Auto select first match if active item is filtered out
+            if (filteredThals.length > 0 && !filteredThals.some(t => t.id === activeThalId)) {
+                activeThalId = filteredThals[0].id;
+                renderActiveThalDetails();
+            }
+        }
+
+        // Select a thal tab
+        function selectThal(id) {
+            activeThalId = id;
+            renderSidebar();
+            renderActiveThalDetails();
+        }
+
+        // Check if thal contains matching search text
+        function thalContainsKeyword(thal, query) {
+            const cleanQuery = query.toLowerCase().trim();
+            if (thal.type.toLowerCase().includes(cleanQuery)) return true;
+            if (String(thal.price).includes(cleanQuery)) return true;
+            if (`thal ${thal.id}`.includes(cleanQuery)) return true;
+            
+            // Search items
+            for (let category in thal.items) {
+                if (category.toLowerCase().includes(cleanQuery)) return true;
+                const list = thal.items[category];
+                for (let item of list) {
+                    if (item.toLowerCase().includes(cleanQuery)) return true;
+                }
+            }
+            return false;
+        }
+
+        // Render detail view of active thal
+        function renderActiveThalDetails() {
+            const panel = document.getElementById('details-panel');
+            const thal = thalMenus.find(t => t.id === activeThalId);
+            
+            if (!thal) {
+                panel.innerHTML = `<div class="empty-category-text" style="text-align:center; padding: 40px 0;">No matching thal found.</div>`;
+                return;
+            }
+
+            let html = `
+                <div>
+                    <!-- Panel Header -->
+                    <div class="panel-header">
+                        <div class="panel-title-group">
+                            <h2>Thal Package ${thal.id} <span class="package-type-badge ${thal.type.toLowerCase()}" style="font-size: 0.9rem; padding: 3px 10px;">${thal.type}</span></h2>
+                            <p>Traditional Bohra Dining System Menu Card</p>
+                        </div>
+                        <a href="https://wa.me/919727404681?text=Hi%20Azhar%20Bhai,%20I'm%20interested%20in%20booking%20Thal%20Package%20${thal.id}%20(₹${thal.price}%20Per%20Thal)%20for%20my%20function." 
+                           target="_blank" 
+                           class="action-link action-wa" 
+                           style="padding: 10px 20px; font-size: 0.95rem; border-radius: 8px; flex: initial;">
+                            💬 Book This Thal
+                        </a>
+                    </div>
+
+                    <!-- Body layout with image and items list -->
+                    <div class="thal-content-body">
+                        <!-- Image Column -->
+                        <div class="thal-image-wrapper">
+                            <img src="${thal.image}" alt="Thal Package ${thal.id} dishes layout" onerror="this.src='caterers_thal_system.png'">
+                            <div class="thal-image-caption">Dish Presentation for Thal ${thal.id}</div>
+                        </div>
+
+                        <!-- Items Grid Column -->
+                        <div class="items-grid">
+            `;
+
+            // Loop items categories
+            for (let category in thal.items) {
+                const list = thal.items[category];
+                html += `
+                    <div class="category-box-card">
+                        <h4>🍴 ${category}</h4>
+                        <ul>
+                `;
+                
+                if (list.length === 0) {
+                    html += `<li class="empty-category-text">Standard ${category.toLowerCase()} included</li>`;
+                } else {
+                    list.forEach(item => {
+                        const displayName = searchQuery ? highlightText(item, searchQuery) : item;
+                        html += `<li>${displayName}</li>`;
+                    });
+                }
+                
+                html += `
+                        </ul>
+                    </div>
+                `;
+            }
+
+            html += `
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Section -->
+                <div>
+                    <div class="footer-note-card">
+                        "Traditional Bohra Thal System includes serving 4 guests in a single large circular tray platter"
+                    </div>
+                    
+                    <div class="pricing-section-card">
+                        <div class="pricing-info-block">
+                            <span class="price-main-tag">₹${thal.price}/- <span style="font-size: 1.1rem; font-weight: normal; color: var(--text-light);">Per Thal</span></span>
+                            <span class="price-sub-tag">${thal.minQty}</span>
+                        </div>
+                        <a href="https://wa.me/919228864724?text=Hi%20Abutalib%20Bhai,%20I'm%20inquiring%20about%20Thal%20Package%20${thal.id}%20(₹${thal.price}%20Per%20Thal)." 
+                           target="_blank" 
+                           class="action-link action-wa" 
+                           style="padding: 12px 25px; font-size: 1rem; border-radius: 8px; flex: initial;">
+                            💬 Order Thal Now
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            panel.innerHTML = html;
+        }
+
+        // Render A4 printable pages dynamically
+        function renderPrintView() {
+            const printView = document.getElementById('print-view');
+            printView.innerHTML = '';
+
+            // 1. Cover Page
+            const coverPage = document.createElement('div');
+            coverPage.className = 'page cover-page';
+            coverPage.innerHTML = `
+                ${getPageBorderSVG()}
+                <div class="cover-content">
+                    <div style="height: 12mm;"></div>
+                    
+                    <img class="cover-logo-img" src="mohammdi_logo.png" alt="Mohammdi Caterers Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%233b7f2b\'><circle cx=\'50\' cy=\'50\' r=\'45\' fill=\'none\' stroke=\'%233b7f2b\' stroke-width=\'3\'/><text x=\'50%\' y=\'62%\' font-size=\'40\' font-family=\'serif\' text-anchor=\'middle\' font-weight=\'bold\'>M</text></svg>'">
+                    
+                    <div>
+                        <div class="cover-menu-title">Thal Menu</div>
+                        <div class="cover-menu-title-guj">મોહમ્મદી કેટર્સ</div>
+                    </div>
+
+                    <div class="divider-container">
+                        <svg viewBox="-35 -5 70 10" class="divider-svg">
+                            <use href="#divider-scroll" x="0" y="0" />
+                        </svg>
+                    </div>
+
+                    <div class="cover-banner-guj">
+                        <div class="cover-banner-guj-inner">
+                            <div class="cover-banner-text">થાલ સીસ્ટમના સ્પેશ્યાલીસ્ટ છુટક ઓર્ડર લેનાર</div>
+                        </div>
+                    </div>
+
+                    <div class="cover-footer">
+                        <div class="cover-address-text">
+                            <strong>Address:</strong> Begumpura, H.K. Street, Nr. Suraj Steel, Surat.<br>
+                            (બેગમ પુરા, H.K. સ્ટ્રીટ, સુરજ સ્ટીલ ની લાઈનમાં, સુરત)
+                        </div>
+                        
+                        <div class="cover-contacts-grid">
+                            <div class="cover-contact-cell">
+                                <div class="cover-contact-label">AZHAR BHAI</div>
+                                <div class="cover-contact-val">97274 04681</div>
+                            </div>
+                            <div class="cover-contact-cell">
+                                <div class="cover-contact-label">ABUTALIB BHAI</div>
+                                <div class="cover-contact-val">92288 64724</div>
+                            </div>
+                        </div>
+                        <div class="cover-no-branch">WE HAVE NO OTHER BRANCH</div>
+                    </div>
+                </div>
+            `;
+            printView.appendChild(coverPage);
+
+            // 2. Thal Menu Pages
+            thalMenus.forEach((thal, idx) => {
+                const pageNum = idx + 2;
+                const pageEl = document.createElement('div');
+                pageEl.className = 'page menu-page';
+
+                let categoriesHtml = '';
+                for (let category in thal.items) {
+                    const list = thal.items[category];
+                    categoriesHtml += `
+                        <div class="print-category-block">
+                            <div class="print-category-header">
+                                <span class="print-category-title-text">${category}</span>
+                                <div class="print-category-underline"></div>
+                            </div>
+                            <div class="print-category-items-list">
+                    `;
+                    
+                    if (list.length === 0) {
+                        categoriesHtml += `
+                            <div class="print-menu-item-row" style="font-style: italic; color: var(--text-light); border-bottom: none;">
+                                Standard ${category.toLowerCase()} included
+                            </div>
+                        `;
+                    } else {
+                        list.forEach(item => {
+                            categoriesHtml += `<div class="print-menu-item-row">${item}</div>`;
+                        });
+                    }
+
+                    categoriesHtml += `
+                            </div>
+                        </div>
+                    `;
+                }
+
+                pageEl.innerHTML = `
+                    ${getPageBorderSVG()}
+                    <div class="print-page-header">
+                        <div class="print-header-line"></div>
+                        <img class="print-header-logo-img" src="mohammdi_logo.png" alt="Logo" onerror="this.style.display='none'">
+                        <span class="print-header-brand-text">MOHAMMDI CATERERS</span>
+                        <div class="print-header-line"></div>
+                    </div>
+
+                    <div class="print-page-content">
+                        <div class="print-menu-title-block">
+                            <div class="print-menu-title-text">Thal Package ${thal.id}</div>
+                            <div class="print-menu-subtitle-text">${thal.type} Speciality System</div>
+                        </div>
+
+                        <div class="print-main-body">
+                            <!-- Image block -->
+                            <div class="print-image-container">
+                                <img class="print-thal-photo" src="${thal.image}" alt="Thal Layout" onerror="this.src='caterers_thal_system.png'">
+                            </div>
+
+                            <!-- Items list in 2 columns -->
+                            <div class="print-items-container">
+                                ${categoriesHtml}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="print-footer-note">
+                                Price: ₹${thal.price}/- Per Thal &bull; ${thal.minQty}
+                            </div>
+                            <div class="no-other-branch-footer">WE HAVE NO OTHER BRANCH</div>
+                        </div>
+
+                        <div class="print-page-footer">
+                            <div class="print-page-number-circle">${pageNum}</div>
+                        </div>
+                    </div>
+                `;
+                printView.appendChild(pageEl);
+            });
+        }
+
+        // View toggle: web dashboard vs printable layout
+        function switchView(viewMode) {
+            const webView = document.getElementById('web-view');
+            const printView = document.getElementById('print-view');
+            const btnWeb = document.getElementById('btn-web-view');
+            const btnPrint = document.getElementById('btn-print-view');
+
+            if (viewMode === 'print') {
+                webView.style.display = 'none';
+                printView.className = 'preview-mode';
+                btnWeb.classList.remove('active');
+                btnPrint.classList.add('active');
+                document.body.style.backgroundColor = 'var(--bg-desktop)';
+            } else {
+                webView.style.display = 'flex';
+                printView.className = '';
+                btnWeb.classList.add('active');
+                btnPrint.classList.remove('active');
+                document.body.style.backgroundColor = 'var(--bg-desktop)';
+            }
+        }
+
+        // Filter tabs (All, Chicken, Mutton)
+        function setFilter(type) {
+            activeFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`filter-${type}`).classList.add('active');
+            
+            renderSidebar();
+        }
+
+        // Setup search triggers
+        function setupSearch() {
+            const searchBar = document.getElementById('search-bar');
+            const alertBox = document.getElementById('search-alert');
+
+            searchBar.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                if (searchQuery.trim().length > 0) {
+                    alertBox.style.display = 'flex';
+                    alertBox.querySelector('#search-alert-text').innerHTML = `Search results for: "<strong>${escapeHtml(searchQuery)}</strong>"`;
+                } else {
+                    alertBox.style.display = 'none';
+                }
+                
+                renderSidebar();
+                renderActiveThalDetails();
+            });
+        }
+
+        function clearSearch() {
+            const searchBar = document.getElementById('search-bar');
+            searchBar.value = '';
+            searchQuery = '';
+            document.getElementById('search-alert').style.display = 'none';
+            renderSidebar();
+            renderActiveThalDetails();
+        }
+
+        // Highlights matched text in dishes list
+        function highlightText(text, keyword) {
+            if (!keyword) return text;
+            const regex = new RegExp(`(${escapeRegExp(keyword)})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Run application on load
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
