@@ -1568,27 +1568,6 @@
                         "All Cutlery Items and Services Related to Catering and Service Guests are Included in Package"
                     </div>
                 </div>
-
-                <!-- Pricing Block -->
-                <div class="pricing-section-card">
-                    <h3>Package Pricing Structure (Estimated Costs)</h3>
-                    <div class="price-grid-layout">
-            `;
-
-            // Loop pricing
-            for (let guests in pkg.pricing) {
-                const price = pkg.pricing[guests];
-                html += `
-                    <div class="price-chip">
-                        <div class="price-chip-label">${guests}</div>
-                        <div class="price-chip-val">₹${price}</div>
-                    </div>
-                `;
-            }
-
-            html += `
-                    </div>
-                </div>
             `;
 
             panel.innerHTML = html;
@@ -1747,14 +1726,7 @@
                                 "All Cutlery Items and Services Related to Catering and Service Guests are Included in Package"
                             </div>
 
-                            <!-- Pricing -->
-                            <div class="print-pricing-block">
-                                <table class="print-pricing-table">
-                                    <tbody>
-                                        ${pricingTableRows}
-                                    </tbody>
-                                </table>
-                            </div>
+
                             
                             <!-- No Other Branch Line -->
                             <div class="no-other-branch-footer">
