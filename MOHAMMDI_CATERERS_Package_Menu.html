@@ -1787,6 +1787,7 @@
         // Setup search input logic
         function setupSearch() {
             const searchInput = document.getElementById('menu-search');
+            if (!searchInput) return;
             searchInput.addEventListener('input', (e) => {
                 searchQuery = e.target.value;
                 const searchAlert = document.getElementById('search-alert');
@@ -1822,9 +1823,11 @@
 
         // Clear search filters
         function clearSearch() {
-            document.getElementById('menu-search').value = '';
+            const searchInput = document.getElementById('menu-search');
+            if (searchInput) searchInput.value = '';
             searchQuery = '';
-            document.getElementById('search-alert').style.display = 'none';
+            const searchAlert = document.getElementById('search-alert');
+            if (searchAlert) searchAlert.style.display = 'none';
             if (activePackageId === -1) {
                 activePackageId = 1;
             }
