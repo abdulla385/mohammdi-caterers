@@ -1102,22 +1102,10 @@
         <!-- Sticky Control bar -->
         <div class="control-bar">
             <div class="control-left">
-                <a href="index.html" class="back-btn">← Back to Card</a>
                 <a href="#" class="brand-pill">
                     <img src="mohammdi_logo.png" alt="M" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%233b7f2b\'><circle cx=\'50\' cy=\'50\' r=\'45\' fill=\'none\' stroke=\'%233b7f2b\' stroke-width=\'3\'/><text x=\'50%\' y=\'62%\' font-size=\'40\' font-family=\'serif\' text-anchor=\'middle\' font-weight=\'bold\'>M</text></svg>'">
                     <span>MOHAMMDI CATERERS</span>
                 </a>
-            </div>
-
-            <div class="search-container">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="search-bar" class="search-input" placeholder="Search dish/ingredient...">
-            </div>
-
-            <div class="filter-group">
-                <button id="filter-all" class="filter-btn active" onclick="setFilter('all')">All</button>
-                <button id="filter-chicken" class="filter-btn" onclick="setFilter('chicken')">Chicken</button>
-                <button id="filter-mutton" class="filter-btn" onclick="setFilter('mutton')">Mutton</button>
             </div>
             
             <div class="view-toggle">
@@ -1169,11 +1157,7 @@
 
             <!-- Details Display Panel -->
             <div class="details-panel-container">
-                <!-- Search Alerts -->
-                <div class="search-results-alert" id="search-alert">
-                    <span id="search-alert-text">Showing search results for...</span>
-                    <button class="clear-search-btn" onclick="clearSearch()">Clear Search</button>
-                </div>
+
                 
                 <div class="details-panel" id="details-panel">
                     <!-- Dynamic details go here -->
@@ -1909,6 +1893,7 @@
         function setupSearch() {
             const searchBar = document.getElementById('search-bar');
             const alertBox = document.getElementById('search-alert');
+            if (!searchBar) return;
 
             searchBar.addEventListener('input', (e) => {
                 searchQuery = e.target.value;
