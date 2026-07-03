@@ -947,12 +947,12 @@
                 </a>
 
                 <!-- Feedback -->
-                <div class="social-btn-container" onclick="openModal('modal-feedback')">
+                <a href="https://g.page/r/CTCFayGNDb3BEBM/review" target="_blank" class="social-btn-container">
                     <div class="social-circle-outer">
                         <svg class="social-icon-img" viewBox="0 0 24 24" fill="var(--brand-green)"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/></svg>
                     </div>
                     <span class="social-label">Feedback</span>
-                </div>
+                </a>
             </div>
 
             <!-- Touch Bar Arch layout -->
@@ -1027,28 +1027,7 @@
         </div>
     </div>
 
-    <!-- MODAL - CUSTOMER FEEDBACK -->
-    <div id="modal-feedback" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-feedback')">
-        <div class="modal-card">
-            <button class="close-modal-btn" onclick="closeModal('modal-feedback')">&times;</button>
-            <h3 class="modal-title">Catering Feedback Form</h3>
-            <form class="feedback-form" onsubmit="event.preventDefault(); alert('Thank you so much for your feedback! We will get in touch.'); closeModal('modal-feedback');">
-                <div class="form-group">
-                    <label class="form-label">Your Name</label>
-                    <input type="text" class="form-control" placeholder="Enter your name" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" placeholder="Enter your contact number" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Your Review</label>
-                    <textarea class="form-control" rows="3" placeholder="Tell us how you liked our catering service..." required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Submit Feedback</button>
-            </form>
-        </div>
-    </div>
+
 
     <!-- JAVASCRIPT ACTIONS -->
     <script>
