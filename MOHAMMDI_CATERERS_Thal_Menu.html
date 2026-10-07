@@ -414,7 +414,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
         }
 
@@ -430,12 +430,7 @@
         }
 
         .package-price-badge {
-            font-size: 0.8rem;
-            background: var(--brand-green);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 50px;
-            font-weight: 500;
+            display: none;
         }
 
         .package-type-badge {
@@ -1596,10 +1591,7 @@
                 btn.onclick = () => selectThal(thal.id);
 
                 const typeClass = thal.type.toLowerCase();
-                btn.innerHTML = `
-                    <span>Thal ${thal.id} <span class="package-type-badge ${typeClass}">${thal.type}</span></span>
-                    <span class="package-price-badge">₹${thal.price}</span>
-                `;
+                btn.innerHTML = `<span>Thal ${thal.id} <span class="package-type-badge ${typeClass}">${thal.type}</span></span>`;
                 sidebar.appendChild(btn);
             });
             
@@ -1653,7 +1645,7 @@
                             <h2>Thal Package ${thal.id} <span class="package-type-badge ${thal.type.toLowerCase()}" style="font-size: 0.9rem; padding: 3px 10px;">${thal.type}</span></h2>
                             <p>Traditional Bohra Dining System Menu Card</p>
                         </div>
-                        <a href="https://wa.me/919727404681?text=Hi,%20I'm%20interested%20in%20booking%20Thal%20Package%20${thal.id}%20(₹${thal.price}%20Per%20Thal)%20for%20my%20function." 
+                        <a href="https://wa.me/919727404681?text=Hi,%20I'm%20interested%20in%20booking%20Thal%20Package%20${thal.id}%20for%20my%20function." 
                            target="_blank" 
                            class="action-link action-wa" 
                            style="padding: 10px 20px; font-size: 0.95rem; border-radius: 8px; flex: initial;">
@@ -1710,10 +1702,9 @@
                     
                     <div class="pricing-section-card">
                         <div class="pricing-info-block">
-                            <span class="price-main-tag">₹${thal.price}/- <span style="font-size: 1.1rem; font-weight: normal; color: var(--text-light);">Per Thal</span></span>
-                            <span class="price-sub-tag">${thal.minQty}</span>
+                            <span class="price-sub-tag" style="font-size: 1rem; font-weight: 600; color: var(--brand-dark-green);">${thal.minQty}</span>
                         </div>
-                        <a href="https://wa.me/919228864724?text=Hi,%20I'm%20inquiring%20about%20Thal%20Package%20${thal.id}%20(₹${thal.price}%20Per%20Thal)." 
+                        <a href="https://wa.me/919228864724?text=Hi,%20I'm%20inquiring%20about%20Thal%20Package%20${thal.id}." 
                            target="_blank" 
                            class="action-link action-wa" 
                            style="padding: 12px 25px; font-size: 1rem; border-radius: 8px; flex: initial;">
@@ -1845,7 +1836,7 @@
 
                         <div>
                             <div class="print-footer-note">
-                                Price: ₹${thal.price}/- Per Thal &bull; ${thal.minQty}
+                                ${thal.minQty}
                             </div>
                             <div class="no-other-branch-footer">WE HAVE NO OTHER BRANCH</div>
                         </div>

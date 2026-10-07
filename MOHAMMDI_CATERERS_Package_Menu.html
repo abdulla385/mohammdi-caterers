@@ -357,7 +357,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
         }
 
@@ -373,12 +373,7 @@
         }
 
         .package-price-badge {
-            font-size: 0.8rem;
-            background: var(--brand-green);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 50px;
-            font-weight: 500;
+            display: none;
         }
 
         /* Detail Card */
@@ -1469,12 +1464,7 @@
                 const btn = document.createElement('button');
                 btn.className = `nav-tab-btn ${pkg.id === activePackageId ? 'active' : ''}`;
                 btn.onclick = () => selectPackage(pkg.id);
-
-                const minPrice = Object.values(pkg.pricing)[0];
-                btn.innerHTML = `
-                    <span>${pkg.title}</span>
-                    <span class="package-price-badge">₹${minPrice}</span>
-                `;
+                btn.innerHTML = `<span>${pkg.title}</span>`;
                 sidebar.appendChild(btn);
             });
         }
@@ -1663,39 +1653,6 @@
                     categoriesHtml += `
                             </div>
                         </div>
-                    `;
-                }
-
-                // Split pricing into two columns
-                let pricingTableRows = '';
-                const guestKeys = Object.keys(pkg.pricing);
-                const halfLength = Math.ceil(guestKeys.length / 2);
-
-                for (let i = 0; i < halfLength; i++) {
-                    const col1Key = guestKeys[i];
-                    const col1Val = pkg.pricing[col1Key];
-                    const col2Key = guestKeys[i + halfLength];
-                    const col2Val = col2Key ? pkg.pricing[col2Key] : '';
-
-                    pricingTableRows += `
-                        <tr>
-                            <td>
-                                <div class="print-price-cell-content">
-                                    <span class="print-price-label">${col1Key}</span>
-                                    <span class="print-price-dots"></span>
-                                    <span class="print-price-val">${col1Val}</span>
-                                </div>
-                            </td>
-                            <td>
-                                ${col2Key ? `
-                                <div class="print-price-cell-content">
-                                    <span class="print-price-label">${col2Key}</span>
-                                    <span class="print-price-dots"></span>
-                                    <span class="print-price-val">${col2Val}</span>
-                                </div>
-                                ` : ''}
-                            </td>
-                        </tr>
                     `;
                 }
 
